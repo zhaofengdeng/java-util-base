@@ -1,4 +1,4 @@
-package com.base;
+package com.util.base;
 
 public class IntUtil {
 	/**

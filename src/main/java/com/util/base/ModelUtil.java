@@ -1,4 +1,4 @@
-package com.base;
+package com.util.base;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
