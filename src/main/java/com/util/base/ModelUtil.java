@@ -69,6 +69,12 @@ public class ModelUtil {
 				} else {
 					formatValue = false;
 				}
+				try {
+					if(!(Boolean)formatValue) {
+						formatValue=Boolean.parseBoolean(value.toString());
+					}
+				} catch (Exception e) {
+				}
 			} else if (field.getType().getName().equals("java.util.Date")) {
 				formatValue = DateUtil.parseTimestamp(value.toString());
 			} else if (field.getType().getName().equals("java.math.BigDecimal")) {
