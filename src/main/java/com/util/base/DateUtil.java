@@ -19,13 +19,8 @@ public class DateUtil {
 
 	/**
 	 * 
-	 * 添加解析日期的格式 默认包含 
-	 * yyyy-MM-dd 
-	 * yyyy/M/d 
-	 * yyyy/MM/dd 
-	 * yyyy-MM-dd HH:mm:ss
-	 * yyyy/M/d HH:mm:ss 
-	 * yyyy/MM/dd HH:mm:ss
+	 * 添加解析日期的格式 默认包含 yyyy-MM-dd yyyy/M/d yyyy/MM/dd yyyy-MM-dd HH:mm:ss
+	 * yyyy/M/d HH:mm:ss yyyy/MM/dd HH:mm:ss
 	 */
 	public static void addParseTimestampFormat(String format) {
 		// 为空判断
@@ -60,39 +55,66 @@ public class DateUtil {
 
 		return null;
 	}
+
+	/**
+	 * 解析时间
+	 * 
+	 * @param dateText
+	 * @param format
+	 *            默认格式： yyyy-MM-dd HH:mm:ss
+	 * @return
+	 */
+	public static Date parseTimestamp(String dateText, String format) {
+		if (StringUtil.isNullOrEmpty(format)) {
+			format = "yyyy-MM-dd HH:mm:ss";
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		try {
+			return sdf.parse(dateText);
+		} catch (Exception e) {
+		}
+
+		return null;
+	}
+
 	/**
 	 * 增加天数，负数为减
+	 * 
 	 * @param date
 	 * @param day
 	 * @return
 	 */
-	public static Date addDay(Date date,Integer day) {
+	public static Date addDay(Date date, Integer day) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date); 
+		calendar.setTime(date);
 		calendar.add(Calendar.DATE, day);
 		return calendar.getTime();
 	}
+
 	/**
 	 * 增加月份，负数为减
+	 * 
 	 * @param date
 	 * @param month
 	 * @return
 	 */
-	public static Date addMonth(Date date,Integer month) {
+	public static Date addMonth(Date date, Integer month) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date); 
+		calendar.setTime(date);
 		calendar.add(Calendar.MONTH, month);
 		return calendar.getTime();
 	}
+
 	/**
 	 * 增加年，负数为减
+	 * 
 	 * @param date
 	 * @param year
 	 * @return
 	 */
-	public static Date addYear(Date date,Integer year) {
+	public static Date addYear(Date date, Integer year) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date); 
+		calendar.setTime(date);
 		calendar.add(Calendar.YEAR, year);
 		return calendar.getTime();
 	}
