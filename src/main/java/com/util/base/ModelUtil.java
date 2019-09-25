@@ -7,11 +7,12 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class ModelUtil {
-	public static <T> T copy(T oldModel, Class<T> clazz) {
+
+	public static <T> T copy(T oldModel) {
 		T _form = null;
 		try {
 			if (_form == null) {
-				_form = clazz.newInstance();
+				_form = (T) oldModel.getClass().newInstance();
 			}
 			try {
 				PropertyDescriptor propertyDescriptor;
