@@ -7,6 +7,31 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class ModelUtil {
+	public static <T> T copy(T oldModel, Class<T> clazz) {
+		T _form = null;
+		try {
+			if (_form == null) {
+				_form = clazz.newInstance();
+			}
+			try {
+				PropertyDescriptor propertyDescriptor;
+				Field[] fields = _form.getClass().getDeclaredFields();
+				for (Field field : fields) {
+					propertyDescriptor = new PropertyDescriptor(field.getName(), _form.getClass());// 创建一个属性描述器
+					Object val = propertyDescriptor.getReadMethod().invoke(oldModel);
+					propertyDescriptor.getWriteMethod().invoke(_form, val);
+				}
+				return _form;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return _form;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return _form;
+		}
+	}
+
 	/**
 	 * map转换成model.通过内省的方式
 	 * 
@@ -31,7 +56,8 @@ public class ModelUtil {
 			PropertyDescriptor propertyDescriptor;
 			Field[] fields = _form.getClass().getDeclaredFields();
 			for (Field field : fields) {
-				propertyDescriptor = new PropertyDescriptor(field.getName(), _form.getClass());// 创建一个属性描述器
+				// 创建一个属性描述器
+				propertyDescriptor = new PropertyDescriptor(field.getName(), _form.getClass());
 				if (map.containsKey(field.getName())) {
 					assignValue(propertyDescriptor, field, _form, map.get(field.getName()));
 				}
@@ -70,8 +96,8 @@ public class ModelUtil {
 					formatValue = false;
 				}
 				try {
-					if(!(Boolean)formatValue) {
-						formatValue=Boolean.parseBoolean(value.toString());
+					if (!(Boolean) formatValue) {
+						formatValue = Boolean.parseBoolean(value.toString());
 					}
 				} catch (Exception e) {
 				}
