@@ -92,6 +92,19 @@ public class DateUtil {
 	}
 
 	/**
+	 * 增加小时数，负数为减
+	 * 
+	 * @param date
+	 * @param day
+	 * @return
+	 */
+	public static Date addHour(Date date, Integer hour) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR, hour);
+		return calendar.getTime();
+	}
+	/**
 	 * 增加月份，负数为减
 	 * 
 	 * @param date
