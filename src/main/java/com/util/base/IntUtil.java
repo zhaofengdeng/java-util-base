@@ -18,4 +18,22 @@ public class IntUtil {
 		return Integer.valueOf(intV);
 
 	}
+
+	/**
+	 * 是否是int
+	 * 
+	 * @param text
+	 * @return
+	 */
+	public static boolean isInt(String text) {
+		if (StringUtil.isNullOrEmpty(text)) {
+			return false;
+		}
+		for (int i = text.length(); --i >= 0;) {
+			int chr = text.charAt(i);
+			if (chr < 48 || chr > 57)
+				return false;
+		}
+		return true;
+	}
 }
