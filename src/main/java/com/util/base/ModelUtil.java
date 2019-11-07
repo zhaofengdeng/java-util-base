@@ -81,6 +81,9 @@ public class ModelUtil {
 	 */
 	public static void assignValue(PropertyDescriptor propertyDescriptor, Field field, Object model, Object value) {
 		try {
+			if(value==null) {
+				return ;
+			}
 			Object formatValue = value;
 			if (field.getType().getName().equals("java.lang.Long")) {
 				formatValue = Long.parseLong(value.toString());
