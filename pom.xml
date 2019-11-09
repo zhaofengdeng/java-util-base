@@ -5,7 +5,7 @@
 
 	<groupId>com</groupId>
 	<artifactId>util-base</artifactId>
-	<version>0.16</version>
+	<version>0.18</version>
 	<packaging>jar</packaging>
 	<name>java-util-base</name>
 	<properties>

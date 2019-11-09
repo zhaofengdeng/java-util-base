@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DateUtil {
 	public static List<String> FORMATS = new ArrayList<>();
-	{
+	static{
 		FORMATS.add("yyyy-MM-dd");
 		FORMATS.add("yyyy/M/d");
 		FORMATS.add("yyyy/MM/dd");

@@ -23,9 +23,7 @@ public class ModelUtil {
 					Object val = propertyDescriptor.getReadMethod().invoke(oldModel);
 					propertyDescriptor.getWriteMethod().invoke(_form, val);
 				} catch (Exception e) {
-					System.out.println(field.getName()+"============异常");
-					e.printStackTrace();
-					return _form;
+					System.out.println("modelUtil错误,===================" + field.getName() + "============异常");
 				}
 			}
 			return _form;
@@ -56,21 +54,20 @@ public class ModelUtil {
 			return _form;
 		}
 
-		try {
-			PropertyDescriptor propertyDescriptor;
-			Field[] fields = _form.getClass().getDeclaredFields();
-			for (Field field : fields) {
+		PropertyDescriptor propertyDescriptor;
+		Field[] fields = _form.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			try {
 				// 创建一个属性描述器
 				propertyDescriptor = new PropertyDescriptor(field.getName(), _form.getClass());
 				if (map.containsKey(field.getName())) {
 					assignValue(propertyDescriptor, field, _form, map.get(field.getName()));
 				}
+			} catch (Exception e) {
+				System.out.println("modelUtil错误,===================" + field.getName() + "============异常");
 			}
-			return _form;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return _form;
 		}
+		return _form;
 
 	}
 
