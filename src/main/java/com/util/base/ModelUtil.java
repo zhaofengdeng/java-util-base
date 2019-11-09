@@ -14,19 +14,22 @@ public class ModelUtil {
 			if (_form == null) {
 				_form = (T) oldModel.getClass().newInstance();
 			}
-			try {
-				PropertyDescriptor propertyDescriptor;
-				Field[] fields = _form.getClass().getDeclaredFields();
-				for (Field field : fields) {
+
+			PropertyDescriptor propertyDescriptor;
+			Field[] fields = _form.getClass().getDeclaredFields();
+			for (Field field : fields) {
+				try {
 					propertyDescriptor = new PropertyDescriptor(field.getName(), _form.getClass());// 创建一个属性描述器
 					Object val = propertyDescriptor.getReadMethod().invoke(oldModel);
 					propertyDescriptor.getWriteMethod().invoke(_form, val);
+				} catch (Exception e) {
+					System.out.println(field.getName()+"============异常");
+					e.printStackTrace();
+					return _form;
 				}
-				return _form;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return _form;
 			}
+			return _form;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return _form;
@@ -81,8 +84,8 @@ public class ModelUtil {
 	 */
 	public static void assignValue(PropertyDescriptor propertyDescriptor, Field field, Object model, Object value) {
 		try {
-			if(value==null) {
-				return ;
+			if (value == null) {
+				return;
 			}
 			Object formatValue = value;
 			if (field.getType().getName().equals("java.lang.Long")) {
