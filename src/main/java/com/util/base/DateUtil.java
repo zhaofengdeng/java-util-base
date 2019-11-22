@@ -8,19 +8,19 @@ import java.util.List;
 
 public class DateUtil {
 	public static List<String> FORMATS = new ArrayList<>();
-	static{
-		FORMATS.add("yyyy-MM-dd");
-		FORMATS.add("yyyy/M/d");
-		FORMATS.add("yyyy/MM/dd");
+	static {
 		FORMATS.add("yyyy-MM-dd HH:mm:ss");
 		FORMATS.add("yyyy/M/d HH:mm:ss");
 		FORMATS.add("yyyy/MM/dd HH:mm:ss");
+		FORMATS.add("yyyy-MM-dd");
+		FORMATS.add("yyyy/M/d");
+		FORMATS.add("yyyy/MM/dd");
 	}
 
 	/**
 	 * 
-	 * 添加解析日期的格式 默认包含 yyyy-MM-dd yyyy/M/d yyyy/MM/dd yyyy-MM-dd HH:mm:ss
-	 * yyyy/M/d HH:mm:ss yyyy/MM/dd HH:mm:ss
+	 * 添加解析日期的格式 默认包含 yyyy-MM-dd yyyy/M/d yyyy/MM/dd yyyy-MM-dd HH:mm:ss yyyy/M/d
+	 * HH:mm:ss yyyy/MM/dd HH:mm:ss
 	 */
 	public static void addParseTimestampFormat(String format) {
 		// 为空判断
@@ -60,8 +60,7 @@ public class DateUtil {
 	 * 解析时间
 	 * 
 	 * @param dateText
-	 * @param format
-	 *            默认格式： yyyy-MM-dd HH:mm:ss
+	 * @param format   默认格式： yyyy-MM-dd HH:mm:ss
 	 * @return
 	 */
 	public static Date parseTimestamp(String dateText, String format) {
@@ -104,6 +103,7 @@ public class DateUtil {
 		calendar.add(Calendar.HOUR, hour);
 		return calendar.getTime();
 	}
+
 	/**
 	 * 增加月份，负数为减
 	 * 
@@ -132,4 +132,73 @@ public class DateUtil {
 		return calendar.getTime();
 	}
 
+	/**
+	 * 根据日期获取当天是周几
+	 * 
+	 * @param datetime 日期
+	 * @return 周几
+	 */
+	public static String getWeek(Date date) {
+		String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+	
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		return weekDays[w];
+	}
+
+	
+
+	/**
+	 * 格式如下:当天 凌晨1:20 早上6:30 中午10:00 下午3:30 晚上7:40 昨天 前天 近七天内显示周几
+	 * 其余时间走format格式，默认是yyyy/MM/dd
+	 * 
+	 * @param date
+	 * @param format
+	 * @return
+	 */
+	public static String getCNText(Date date, String format) {
+		int dateInt = Integer.valueOf(StringUtil.formatDate(date, "yyyyMMdd"));
+		int curDate = Integer.valueOf(StringUtil.formatDate(new Date(), "yyyyMMdd"));
+		String dateStr = StringUtil.formatDate(date, " HH:mm");
+		// 今天
+		if (curDate == dateInt) {
+			dateStr = StringUtil.formatDate(date, " hh:mm");
+			int hour = date.getHours();
+			if(hour==0) {
+				 dateStr = StringUtil.formatDate(date, " HH:mm");
+			}
+			if (hour < 5) {
+				return "凌晨 " + dateStr;
+			}
+			if (hour < 10) {
+				return "早上 " + dateStr;
+			}
+			if (hour < 13) {
+				return "中午 " + dateStr;
+			}
+			if (hour < 18) {
+				return "下午 " + dateStr;
+			}
+			return "晚上 " + dateStr;
+		}
+
+		int chaDay = curDate - dateInt;
+		// 昨天
+		if (chaDay == 1) {
+			return "昨天 " + dateStr;
+		}
+		// 前天
+		if (chaDay == 2) {
+			return "前天 " + dateStr;
+		}
+		if (chaDay > 0 && chaDay <7) {
+			return getWeek(date) + dateStr;
+		}
+		if (StringUtil.isNullOrEmpty(format)) {
+			format = "yyyy/MM/dd";
+		}
+		return StringUtil.formatDate(date, format);
+
+	}
 }
