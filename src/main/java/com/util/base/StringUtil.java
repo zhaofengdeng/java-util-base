@@ -2,6 +2,7 @@ package com.util.base;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 public class StringUtil {
@@ -62,4 +63,16 @@ public class StringUtil {
 		return UUID.randomUUID().toString().replace("-", "").toUpperCase();
 	}
 
+	/**
+	 * 生成指定位数的随机数
+	 * @param length
+	 * @return
+	 */
+	public static String randomInt(int length) {
+		String str="";
+		for (int i = 0; i < length; i++) {
+			str=str+new Random().nextInt(10);
+		}
+		return str;
+	}
 }

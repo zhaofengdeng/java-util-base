@@ -1,5 +1,7 @@
 package com.util.base;
 
+import java.util.Random;
+
 public class IntUtil {
 	/**
 	 * 解析int
@@ -36,4 +38,6 @@ public class IntUtil {
 		}
 		return true;
 	}
+
+	
 }
