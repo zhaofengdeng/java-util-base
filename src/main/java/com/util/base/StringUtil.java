@@ -1,9 +1,12 @@
 package com.util.base;
 
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
+
+import sun.misc.BASE64Encoder;
 
 public class StringUtil {
 	/**
@@ -55,8 +58,10 @@ public class StringUtil {
 		lastFileDate = curDate;
 		return curDate + fileIndex;
 	}
+
 	/**
 	 * 获取UUID
+	 * 
 	 * @return
 	 */
 	public static String getUUID() {
@@ -65,14 +70,36 @@ public class StringUtil {
 
 	/**
 	 * 生成指定位数的随机数
+	 * 
 	 * @param length
 	 * @return
 	 */
 	public static String randomInt(int length) {
-		String str="";
+		String str = "";
 		for (int i = 0; i < length; i++) {
-			str=str+new Random().nextInt(10);
+			str = str + new Random().nextInt(10);
 		}
 		return str;
+	}
+
+	/**
+	 * MD5进行64位加密
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String Md5BASE64(String str) {
+		String newstr = "";
+		try {
+			// 确定计算方法
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			BASE64Encoder base64en = new BASE64Encoder();
+			// 加密后的字符串
+			newstr = base64en.encode(md5.digest(str.getBytes("utf-8")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return newstr;
 	}
 }

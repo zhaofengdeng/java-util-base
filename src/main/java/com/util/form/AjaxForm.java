@@ -14,6 +14,7 @@ public class AjaxForm {
 
 	public AjaxForm setError(Integer errorCode, String errorMsg) {
 		this.success = false;
+		this.code=errorCode;
 		this.data = errorMsg;
 		return this;
 	}
