@@ -19,6 +19,9 @@ public class StringUtil {
 		if (date == null) {
 			return "";
 		}
+		if(StringUtil.isNullOrEmpty(format)) {
+			format="yyyy-MM-dd HH:mm:ss";
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
 	}
