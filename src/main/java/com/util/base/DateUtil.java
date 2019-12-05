@@ -140,14 +140,12 @@ public class DateUtil {
 	 */
 	public static String getWeek(Date date) {
 		String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
-	
+
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
 		return weekDays[w];
 	}
-
-	
 
 	/**
 	 * 格式如下:当天 凌晨1:20 早上6:30 中午10:00 下午3:30 晚上7:40 昨天 前天 近七天内显示周几
@@ -165,8 +163,8 @@ public class DateUtil {
 		if (curDate == dateInt) {
 			dateStr = StringUtil.formatDate(date, " hh:mm");
 			int hour = date.getHours();
-			if(hour==0) {
-				 dateStr = StringUtil.formatDate(date, " HH:mm");
+			if (hour == 0) {
+				dateStr = StringUtil.formatDate(date, " HH:mm");
 			}
 			if (hour < 5) {
 				return "凌晨 " + dateStr;
@@ -192,7 +190,7 @@ public class DateUtil {
 		if (chaDay == 2) {
 			return "前天 " + dateStr;
 		}
-		if (chaDay > 0 && chaDay <7) {
+		if (chaDay > 0 && chaDay < 7) {
 			return getWeek(date) + dateStr;
 		}
 		if (StringUtil.isNullOrEmpty(format)) {
@@ -200,5 +198,23 @@ public class DateUtil {
 		}
 		return StringUtil.formatDate(date, format);
 
+	}
+	/**
+	 * 得到两个日期的天数差
+	 * @param d2
+	 * @param d1
+	 * @return
+	 */
+	public static long getDifferenceDay(Date d2, Date d1) {
+		long time = d2.getTime();
+		long time2 = d1.getTime();
+		long differenceTime ;
+		if(time<time2) {
+			differenceTime=time2-time;
+		}else {
+			differenceTime=time - time2;
+		}
+		long daysBetween = (differenceTime+ 1000000) / (60 * 60 * 24 * 1000);
+		return daysBetween;
 	}
 }
