@@ -64,7 +64,11 @@ public class ModelUtil {
 					assignValue(propertyDescriptor, field, _form, map.get(field.getName()));
 				}
 			} catch (Exception e) {
-				System.out.println("modelUtil错误,===================" + field.getName() + "============异常");
+				if(field.getName().indexOf("_")!=0) {
+					System.out.println("modelUtil错误,===================" + field.getName() + "============异常");
+					e.printStackTrace();
+				}
+				
 			}
 		}
 		return _form;
