@@ -18,6 +18,36 @@ public class DateUtil {
 	}
 
 	/**
+	 * 得到年龄
+	 * @param birthDay
+	 * @return
+	 * @throws Exception
+	 */
+	public static int getAge(Date birthDay) throws Exception {
+		Calendar cal = Calendar.getInstance();
+		if (cal.before(birthDay)) { // 出生日期晚于当前时间，无法计算
+			throw new IllegalArgumentException("The birthDay is before Now.It's unbelievable!");
+		}
+		int yearNow = cal.get(Calendar.YEAR); // 当前年份
+		int monthNow = cal.get(Calendar.MONTH); // 当前月份
+		int dayOfMonthNow = cal.get(Calendar.DAY_OF_MONTH); // 当前日期
+		cal.setTime(birthDay);
+		int yearBirth = cal.get(Calendar.YEAR);
+		int monthBirth = cal.get(Calendar.MONTH);
+		int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
+		int age = yearNow - yearBirth; // 计算整岁数
+		if (monthNow <= monthBirth) {
+			if (monthNow == monthBirth) {
+				if (dayOfMonthNow < dayOfMonthBirth)
+					age--;// 当前日期在生日之前，年龄减一
+			} else {
+				age--;// 当前月份在生日之前，年龄减一
+			}
+		}
+		return age;
+	}
+
+	/**
 	 * 
 	 * 添加解析日期的格式 默认包含 yyyy-MM-dd yyyy/M/d yyyy/MM/dd yyyy-MM-dd HH:mm:ss yyyy/M/d
 	 * HH:mm:ss yyyy/MM/dd HH:mm:ss
@@ -199,8 +229,10 @@ public class DateUtil {
 		return StringUtil.formatDate(date, format);
 
 	}
+
 	/**
 	 * 得到两个日期的天数差
+	 * 
 	 * @param d2
 	 * @param d1
 	 * @return
@@ -208,13 +240,13 @@ public class DateUtil {
 	public static long getDifferenceDay(Date d2, Date d1) {
 		long time = d2.getTime();
 		long time2 = d1.getTime();
-		long differenceTime ;
-		if(time<time2) {
-			differenceTime=time2-time;
-		}else {
-			differenceTime=time - time2;
+		long differenceTime;
+		if (time < time2) {
+			differenceTime = time2 - time;
+		} else {
+			differenceTime = time - time2;
 		}
-		long daysBetween = (differenceTime+ 1000000) / (60 * 60 * 24 * 1000);
+		long daysBetween = (differenceTime + 1000000) / (60 * 60 * 24 * 1000);
 		return daysBetween;
 	}
 }
