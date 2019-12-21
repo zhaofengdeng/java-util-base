@@ -3,7 +3,11 @@ package com.util.base;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ModelUtil {
@@ -64,11 +68,11 @@ public class ModelUtil {
 					assignValue(propertyDescriptor, field, _form, map.get(field.getName()));
 				}
 			} catch (Exception e) {
-				if(field.getName().indexOf("_")!=0) {
+				if (field.getName().indexOf("_") != 0) {
 					System.out.println("modelUtil错误,===================" + field.getName() + "============异常");
 					e.printStackTrace();
 				}
-				
+
 			}
 		}
 		return _form;
@@ -89,7 +93,9 @@ public class ModelUtil {
 				return;
 			}
 			Object formatValue = value;
-			if (field.getType().getName().equals("java.lang.Long")) {
+			if (field.getType().getName().equals("java.lang.String")) {
+				formatValue = value.toString();
+			} else if (field.getType().getName().equals("java.lang.Long")) {
 				formatValue = Long.parseLong(value.toString());
 			} else if (field.getType().getName().equals("java.lang.Integer")) {
 				formatValue = IntUtil.parseInt(value.toString());
@@ -113,6 +119,25 @@ public class ModelUtil {
 				formatValue = DateUtil.parseTimestamp(value.toString());
 			} else if (field.getType().getName().equals("java.math.BigDecimal")) {
 				formatValue = new BigDecimal(value.toString());
+				// 转list
+			} else if (field.getType().equals(List.class)) {
+				List<Map<String, Object>> mapList = (List<Map<String, Object>>) value;
+				Type genericType = field.getGenericType();
+				if (null == genericType) {
+					return;
+				}
+				if (genericType instanceof ParameterizedType) {
+					ParameterizedType pt = (ParameterizedType) genericType;
+					// 得到泛型里的class类型对象
+					List<Object> curEleList = new ArrayList<>();
+					Class<?> actualTypeArgument = (Class<?>) pt.getActualTypeArguments()[0];
+					for (Map<String, Object> map : mapList) {
+						Object listModel = toModel(map, actualTypeArgument);
+						curEleList.add(listModel);
+					}
+					formatValue = curEleList;
+
+				}
 			}
 			propertyDescriptor.getWriteMethod().invoke(model, formatValue);
 		} catch (IllegalAccessException e) {
