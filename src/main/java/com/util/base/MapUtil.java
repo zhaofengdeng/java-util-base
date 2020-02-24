@@ -1,6 +1,7 @@
 package com.util.base;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -64,7 +65,32 @@ public class MapUtil {
 		if (map.get(key) == null) {
 			return "";
 		}
+		
 		return map.get(key).toString();
+	}
+	
+	public static Integer getInteger(Map<String, Object> map, String key) {
+		Object value = map.get(key);
+		if (value == null) {
+			return null;
+		}
+		String valueText=value.toString();
+		if(StringUtil.isNullOrEmpty(valueText)) {
+			return null;
+		}
+		return IntUtil.parseInt(valueText);
+	}
+	
+	public static Date getDate(Map<String, Object> map, String key) {
+		Object value = map.get(key);
+		if (map.get(key) == null) {
+			return null;
+		}
+		String valueText=value.toString();
+		if(StringUtil.isNullOrEmpty(valueText)) {
+			return null;
+		}
+		return DateUtil.parseTimestamp(valueText);
 	}
 
 	/**

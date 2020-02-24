@@ -1,5 +1,6 @@
 package com.util.base;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -105,4 +106,21 @@ public class StringUtil {
 
 		return newstr;
 	}
+	/**
+	 * MD5加密
+	 * @param str
+	 * @return
+	 */
+	public static String MD5(String str) {
+	    try {
+            // 生成一个MD5加密计算摘要
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // 计算md5函数
+            md.update(str.getBytes());
+            return new BigInteger(1, md.digest()).toString(16);
+        } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+        }
+    }
 }
