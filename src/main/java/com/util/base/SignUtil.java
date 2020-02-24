@@ -29,4 +29,32 @@ public class SignUtil {
 		return paramUrl;
 		
 	}
+	public static String toRequestParams2(Map<String,Object> map,String sginBegin,String signEnd) {
+		List<String> keys = MapUtil.keys(map);
+		Collections.sort(keys);
+		String paramUrl="";
+		String sign=sginBegin;
+		for (String key : keys) {
+			Object object = map.get(key);
+			if(object==null) {
+				continue;
+			}
+			if (object instanceof List) {
+			   List<String> list=( List<String>)object;
+			   for (String value : list) {
+				   sign=sign+key+value;
+					paramUrl=paramUrl+"&"+key+"="+URLEncoder.encode(value);
+			}
+			   } else {
+				   sign=sign+key+object;
+					paramUrl=paramUrl+"&"+key+"="+URLEncoder.encode(object.toString());
+			   }
+			
+		}
+		sign=sign+signEnd;
+		sign=StringUtil.MD5(sign).toUpperCase();
+		paramUrl="sign="+sign+paramUrl;
+		return paramUrl;
+		
+	}
 }
