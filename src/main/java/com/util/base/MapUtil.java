@@ -26,6 +26,9 @@ public class MapUtil {
 	 */
 	public static List<String> getList(Map<String, Object> map, String key) {
 		List<String> list = new ArrayList<>();
+		if(map.get(key)==null) {
+			return list;
+		}
 		if (map.get(key).getClass().getName().equals("java.util.ArrayList")) {
 			List<Object> objects = (List<Object>) map.get(key);
 			for (Object object : objects) {
